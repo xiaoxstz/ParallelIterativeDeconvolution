@@ -1,0 +1,88 @@
+requires("1.37e");
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// MRNSD
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+pathToBlurredImage = "D:/Research/Images/head/head_blur.tif";
+pathToPsf = "D:/Research/Images/head/head_psf.tif";
+pathToDeblurredImage = "D:/Research/Images/head/head_deblurred_mrnsd.tif";
+preconditioner = "FFT"; //available options: FFT, NONE
+preconditionerTol = "-1"; //if -1, then GCV is used to compute preconditionerTol
+boundary = "REFLEXIVE"; //available options: REFLEXIVE, PERIODIC, ZERO
+resizing = "AUTO"; // available options: AUTO, MINIMAL, NEXT_POWER_OF_TWO
+output = "SAME_AS_SOURCE"; // available options: SAME_AS_SOURCE, BYTE, SHORT, FLOAT  
+precision = "SINGLE"; //available options: SINGLE, DOUBLE
+stoppingTol = "-1"; //if -1, then stoppingTol is computed automatically
+threshold = "-1"; //if -1, then disabled
+logConvergence = "false";
+maxIters = "5";
+nOfThreads = "2";
+showIter = "false";
+call("edu.emory.mathcs.restoretools.iterative.ParallelIterativeDeconvolution3D.deconvolveMRNSD", pathToBlurredImage, pathToPsf, pathToDeblurredImage, preconditioner, preconditionerTol, boundary, resizing, output, precision, stoppingTol, threshold, logConvergence, maxIters, nOfThreads, showIter);
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// CGLS
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+pathToBlurredImage = "D:/Research/Images/head/head_blur.tif";
+pathToPsf = "D:/Research/Images/head/head_psf.tif";
+pathToDeblurredImage = "D:/Research/Images/head/head_deblurred_cgls.tif";
+preconditioner = "FFT"; //available options: FFT, NONE
+preconditionerTol = "-1"; //if -1, then GCV is used to compute preconditionerTol
+boundary = "REFLEXIVE"; //available options: REFLEXIVE, PERIODIC, ZERO
+resizing = "AUTO"; // available options: AUTO, MINIMAL, NEXT_POWER_OF_TWO
+output = "SAME_AS_SOURCE"; // available options: SAME_AS_SOURCE, BYTE, SHORT, FLOAT  
+precision = "SINGLE"; //available options: SINGLE, DOUBLE
+stoppingTol = "-1"; //if -1, then stoppingTol is computed automatically
+threshold = "0"; //if -1, then disabled
+logConvergence = "false";
+maxIters = "5";
+nOfThreads = "2";
+showIter = "false";
+call("edu.emory.mathcs.restoretools.iterative.ParallelIterativeDeconvolution3D.deconvolveCGLS", pathToBlurredImage, pathToPsf, pathToDeblurredImage, preconditioner, preconditionerTol, boundary, resizing, output, precision, stoppingTol, threshold, logConvergence, maxIters, nOfThreads, showIter);
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// WPL
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+pathToBlurredImage = "D:/Research/Images/head/head_blur.tif";
+pathToPsf = "D:/Research/Images/head/head_psf.tif";
+pathToDeblurredImage = "D:/Research/Images/head/head_deblurred_wpl.tif";	
+boundary = "REFLEXIVE"; //available options: REFLEXIVE, PERIODIC, ZERO
+resizing = "AUTO"; // available options: AUTO, MINIMAL, NEXT_POWER_OF_TWO
+output = "SAME_AS_SOURCE"; // available options: SAME_AS_SOURCE, BYTE, SHORT, FLOAT  
+precision = "SINGLE"; //available options: SINGLE, DOUBLE
+threshold = "-1"; //if -1, then disabled
+maxIters = "5";
+nOfThreads = "2";
+showIter = "false";
+gamma = "0";
+filterXY = "1.0";
+filterZ = "1.0";
+normalize = "false";
+logMean = "false";
+antiRing = "true";
+changeThreshPercent = "0.01";
+db = "false";
+detectDivergence = "true";
+call("edu.emory.mathcs.restoretools.iterative.ParallelIterativeDeconvolution3D.deconvolveWPL", pathToBlurredImage, pathToPsf, pathToDeblurredImage, boundary, resizing, output, precision, threshold, maxIters, nOfThreads, showIter, gamma, filterXY, filterZ, normalize, logMean, antiRing, changeThreshPercent, db, detectDivergence);
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// HyBR
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+pathToBlurredImage = "D:/Research/Images/head/head_blur.tif";
+pathToPsf = "D:/Research/Images/head/head_psf.tif";
+pathToDeblurredImage = "D:/Research/Images/head/head_deblurred_hybr.tif";
+preconditioner = "FFT"; //available options: FFT, NONE
+preconditionerTol = "-1"; //if -1, then GCV is used to compute preconditionerTol
+boundary = "REFLEXIVE"; //available options: REFLEXIVE, PERIODIC, ZERO
+resizing = "AUTO"; // available options: AUTO, MINIMAL, NEXT_POWER_OF_TWO
+output = "SAME_AS_SOURCE"; // available options: SAME_AS_SOURCE, BYTE, SHORT, FLOAT  
+precision = "SINGLE"; //available options: SINGLE, DOUBLE
+threshold = "0"; //if -1, then disabled
+logConvergence = "false";
+maxIters = "5";
+nOfThreads = "2";
+showIter = "false";
+innerSolver = "TIKHONOV"; //available options: TIKHONOV, NONE
+regMethod = "ADAPTWGCV"; //available options: GCV, WGCV, ADAPTWGCV, NONE
+regParam = "-1"; //only used if regMethod = "NONE"
+omega = "0"; //only used if regMethod = "WGCV"
+reorth = "false";
+beginReg = "2";
+flatTol = "1e-4";
+call("edu.emory.mathcs.restoretools.iterative.ParallelIterativeDeconvolution3D.deconvolveHyBR", pathToBlurredImage, pathToPsf, pathToDeblurredImage, preconditioner, preconditionerTol, boundary, resizing, output, precision, threshold, logConvergence, maxIters, nOfThreads, showIter, innerSolver, regMethod, regParam, omega, reorth, beginReg, flatTol);
