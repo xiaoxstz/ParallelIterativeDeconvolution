@@ -159,7 +159,7 @@ public class FFTFloatPreconditioner3D implements FloatPreconditioner3D {
             B = new DenseFloatMatrix3D(imSize[0], imSize[1], imSize[2], (float[]) b.elements(), 0, 0, 0, imSize[1] * imSize[2], imSize[2], 1, false);
         }
         B = solve(B, transpose);
-        return new DenseFloatMatrix1D(B.size(), (float[]) B.elements(), 0, 1, false);
+        return new DenseFloatMatrix1D((int)B.size(), (float[]) B.elements(), 0, 1, false);
     }
 
     public FloatMatrix3D solve(AbstractMatrix3D B, boolean transpose) {
@@ -426,8 +426,8 @@ public class FFTFloatPreconditioner3D implements FloatPreconditioner3D {
     }
 
     private float defaultTol2(FloatMatrix3D E, FloatMatrix3D B) {
-        FloatMatrix1D s = new DenseFloatMatrix1D(E.size());
-        System.arraycopy((float[]) E.elements(), 0, (float[]) s.elements(), 0, s.size());
+        FloatMatrix1D s = new DenseFloatMatrix1D((int)E.size());
+        System.arraycopy((float[]) E.elements(), 0, (float[]) s.elements(), 0, (int)s.size());
         final float[] evalues = (float[]) s.elements();
         IntComparator compDec = new IntComparator() {
             public int compare(int a, int b) {
@@ -442,10 +442,10 @@ public class FFTFloatPreconditioner3D implements FloatPreconditioner3D {
         AbstractMatrix3D Bhat = ((DenseFloatMatrix3D) B).getFft3();
         ((FComplexMatrix3D) Bhat).assign(FComplexFunctions.abs);
         Bhat = ((FComplexMatrix3D) Bhat).getRealPart();
-        FloatMatrix1D bhat = new DenseFloatMatrix1D(Bhat.size(), (float[]) ((FloatMatrix3D) Bhat).elements(), 0, 1, false);
+        FloatMatrix1D bhat = new DenseFloatMatrix1D((int)Bhat.size(), (float[]) ((FloatMatrix3D) Bhat).elements(), 0, 1, false);
         bhat = bhat.viewSelection(indices);
         bhat.assign(FloatFunctions.div((float) Math.sqrt(B.size())));
-        int n = s.size();
+        int n = (int)s.size();
         float[] rho = new float[n - 1];
         rho[n - 2] = bhat.getQuick(n - 1) * bhat.getQuick(n - 1);
         FloatMatrix1D G = new DenseFloatMatrix1D(n - 1);

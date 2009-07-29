@@ -24,7 +24,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
 import cern.colt.matrix.tdouble.DoubleMatrix3D;
-import cern.colt.matrix.tdouble.algo.DoubleAlgebra;
+import cern.colt.matrix.tdouble.algo.DenseDoubleAlgebra;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix3D;
 import edu.emory.mathcs.restoretools.Enums.OutputType;
 import edu.emory.mathcs.restoretools.iterative.IterativeEnums.BoundaryType;
@@ -45,7 +45,7 @@ public abstract class AbstractDoubleIterativeDeconvolver3D implements IterativeD
     /**
      * Algebra.
      */
-    protected static final DoubleAlgebra alg = DoubleAlgebra.DEFAULT;
+    protected static final DenseDoubleAlgebra alg = DenseDoubleAlgebra.DEFAULT;
 
     /**
      * Blurred image.

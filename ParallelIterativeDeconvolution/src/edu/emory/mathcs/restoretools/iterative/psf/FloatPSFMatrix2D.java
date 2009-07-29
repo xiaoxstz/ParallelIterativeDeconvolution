@@ -204,7 +204,7 @@ public class FloatPSFMatrix2D {
             B = new DenseFloatMatrix2D(imSize[0], imSize[1], (float[]) b.elements(), 0, 0, imSize[1], 1, false);
         }
         B = times(B, transpose);
-        return new DenseFloatMatrix1D(B.size(), (float[]) B.elements(), 0, 1, false);
+        return new DenseFloatMatrix1D((int)B.size(), (float[]) B.elements(), 0, 1, false);
     }
 
     /**

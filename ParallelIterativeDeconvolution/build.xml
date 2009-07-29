@@ -1,5 +1,5 @@
 <project basedir="." default="build" name="parallel_iterative_deconvolution">
-	<property name="version" value="1.9" />
+	<property name="version" value="1.10" />
 	
 	<property name="compiler" value="javac1.5" />
 		
@@ -81,6 +81,7 @@
 			<packageset dir="${javac.src}" />
 			<link href="http://mathcs.emory.edu/~pwendyk/research/parallelcolt/doc/" />
 			<link href="http://rsbweb.nih.gov/ij/developer/api/" />
+			<link href="http://java.sun.com/javase/6/docs/api/" />
 			<classpath refid="javac.classpath" />
 			</javadoc>
 	</target>

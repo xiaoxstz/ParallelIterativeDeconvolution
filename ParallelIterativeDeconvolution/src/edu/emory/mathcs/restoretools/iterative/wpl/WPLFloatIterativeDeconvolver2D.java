@@ -834,7 +834,7 @@ public class WPLFloatIterativeDeconvolver2D {
         final float[] elemsB = (float[]) B.elements();
         final float[] elemsAX = (float[]) AX.elements();
         final float[] elemsX = (float[]) X.elements();
-        final int size = B.size();
+        final int size = (int)B.size();
         int np = ConcurrencyUtils.getNumberOfThreads();
         if ((np > 1) && (size >= ConcurrencyUtils.getThreadsBeginN_2D())) {
             Future<?>[] futures = new Future[np];
@@ -891,7 +891,7 @@ public class WPLFloatIterativeDeconvolver2D {
         final float[] x = (float[]) X.elements();
         final float SCALE = (float) (10 / Math.log(10));
         final float minVal = (float) Math.exp(minDB / SCALE);
-        int size = X.size();
+        int size = (int)X.size();
         int np = ConcurrencyUtils.getNumberOfThreads();
         if ((np > 1) && (size >= ConcurrencyUtils.getThreadsBeginN_2D())) {
             Future<?>[] futures = new Future[np];
@@ -924,7 +924,7 @@ public class WPLFloatIterativeDeconvolver2D {
     private static float unDB(FloatMatrix2D X) {
         final float[] x = (float[]) X.elements();
         final float SCALE = (float) (10 / Math.log(10));
-        final int size = X.size();
+        final int size = (int)X.size();
         float min = Float.MAX_VALUE;
         int np = ConcurrencyUtils.getNumberOfThreads();
         if ((np > 1) && (size >= ConcurrencyUtils.getThreadsBeginN_2D())) {

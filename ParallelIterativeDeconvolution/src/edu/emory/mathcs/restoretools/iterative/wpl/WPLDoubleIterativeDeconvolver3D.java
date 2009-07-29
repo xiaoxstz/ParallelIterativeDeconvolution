@@ -965,7 +965,7 @@ public class WPLDoubleIterativeDeconvolver3D {
         final double[] elemsB = (double[]) B.elements();
         final double[] elemsAX = (double[]) AX.elements();
         final double[] elemsX = (double[]) X.elements();
-        final int size = B.size();
+        final int size = (int)B.size();
         int np = ConcurrencyUtils.getNumberOfThreads();
         if ((np > 1) && (size >= ConcurrencyUtils.getThreadsBeginN_3D())) {
             Future<?>[] futures = new Future[np];
@@ -1022,7 +1022,7 @@ public class WPLDoubleIterativeDeconvolver3D {
         final double[] x = (double[]) X.elements();
         final double SCALE = 10 / Math.log(10);
         final double minVal = Math.exp(minDB / SCALE);
-        int size = X.size();
+        int size = (int)X.size();
         int np = ConcurrencyUtils.getNumberOfThreads();
         if ((np > 1) && (size >= ConcurrencyUtils.getThreadsBeginN_3D())) {
             Future<?>[] futures = new Future[np];
@@ -1055,7 +1055,7 @@ public class WPLDoubleIterativeDeconvolver3D {
     private static double unDB(DoubleMatrix3D X) {
         final double[] x = (double[]) X.elements();
         final double SCALE = 10 / Math.log(10);
-        final int size = X.size();
+        final int size = (int)X.size();
         double min = Double.MAX_VALUE;
         int np = ConcurrencyUtils.getNumberOfThreads();
         if ((np > 1) && (size >= ConcurrencyUtils.getThreadsBeginN_3D())) {

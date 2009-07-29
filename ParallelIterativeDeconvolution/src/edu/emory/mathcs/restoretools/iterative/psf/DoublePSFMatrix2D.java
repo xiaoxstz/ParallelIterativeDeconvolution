@@ -204,7 +204,7 @@ public class DoublePSFMatrix2D {
             B = new DenseDoubleMatrix2D(imSize[0], imSize[1], (double[]) b.elements(), 0, 0, imSize[1], 1, false);
         }
         B = times(B, transpose);
-        return new DenseDoubleMatrix1D(B.size(), (double[]) B.elements(), 0, 1, false);
+        return new DenseDoubleMatrix1D((int)B.size(), (double[]) B.elements(), 0, 1, false);
     }
 
     /**

@@ -143,7 +143,7 @@ public class FFTDoublePreconditioner2D implements DoublePreconditioner2D {
             B = new DenseDoubleMatrix2D(imSize[0], imSize[1], (double[]) b.elements(), 0, 0, imSize[1], 1, false);
         }
         B = solve(B, transpose);
-        return new DenseDoubleMatrix1D(B.size(), (double[]) B.elements(), 0, 1, false);
+        return new DenseDoubleMatrix1D((int)B.size(), (double[]) B.elements(), 0, 1, false);
     }
 
     public DoubleMatrix2D solve(AbstractMatrix2D B, boolean transpose) {
@@ -377,8 +377,8 @@ public class FFTDoublePreconditioner2D implements DoublePreconditioner2D {
     }
 
     private double defaultTol2(DoubleMatrix2D E, DoubleMatrix2D B) {
-        DoubleMatrix1D s = new DenseDoubleMatrix1D(E.size());
-        System.arraycopy((double[]) E.elements(), 0, (double[]) s.elements(), 0, s.size());
+        DoubleMatrix1D s = new DenseDoubleMatrix1D((int)E.size());
+        System.arraycopy((double[]) E.elements(), 0, (double[]) s.elements(), 0, (int)s.size());
         final double[] evalues = (double[]) s.elements();
         IntComparator compDec = new IntComparator() {
             public int compare(int a, int b) {
@@ -393,10 +393,10 @@ public class FFTDoublePreconditioner2D implements DoublePreconditioner2D {
         AbstractMatrix2D Bhat = ((DenseDoubleMatrix2D) B).getFft2();
         ((DComplexMatrix2D) Bhat).assign(DComplexFunctions.abs);
         Bhat = ((DComplexMatrix2D) Bhat).getRealPart();
-        DoubleMatrix1D bhat = new DenseDoubleMatrix1D(Bhat.size(), (double[]) ((DoubleMatrix2D) Bhat).elements(), 0, 1, false);
+        DoubleMatrix1D bhat = new DenseDoubleMatrix1D((int)Bhat.size(), (double[]) ((DoubleMatrix2D) Bhat).elements(), 0, 1, false);
         bhat = bhat.viewSelection(indices);
         bhat.assign(DoubleFunctions.div((double) Math.sqrt(B.size())));
-        int n = s.size();
+        int n = (int)s.size();
         double[] rho = new double[n - 1];
         rho[n - 2] = bhat.getQuick(n - 1) * bhat.getQuick(n - 1);
         DoubleMatrix1D G = new DenseDoubleMatrix1D(n - 1);

@@ -24,7 +24,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
 import cern.colt.matrix.tfloat.FloatMatrix3D;
-import cern.colt.matrix.tfloat.algo.FloatAlgebra;
+import cern.colt.matrix.tfloat.algo.DenseFloatAlgebra;
 import cern.colt.matrix.tfloat.impl.DenseFloatMatrix3D;
 import edu.emory.mathcs.restoretools.Enums.OutputType;
 import edu.emory.mathcs.restoretools.iterative.IterativeEnums.BoundaryType;
@@ -45,7 +45,7 @@ public abstract class AbstractFloatIterativeDeconvolver3D implements IterativeDe
     /**
      * Algebra.
      */
-    protected static final FloatAlgebra alg = FloatAlgebra.DEFAULT;
+    protected static final DenseFloatAlgebra alg = DenseFloatAlgebra.DEFAULT;
 
     /**
      * Blurred image.

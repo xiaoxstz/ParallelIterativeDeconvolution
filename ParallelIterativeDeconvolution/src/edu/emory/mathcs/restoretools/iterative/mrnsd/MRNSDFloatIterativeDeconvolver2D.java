@@ -121,9 +121,9 @@ public class MRNSDFloatIterativeDeconvolver2D extends AbstractFloatIterativeDeco
             imX.show();
         }
         int k;
-        rowList = new IntArrayList(B.size() / 2);
-        columnList = new IntArrayList(B.size() / 2);
-        valueList = new FloatArrayList(B.size() / 2);
+        rowList = new IntArrayList((int)B.size() / 2);
+        columnList = new IntArrayList((int)B.size() / 2);
+        valueList = new FloatArrayList((int)B.size() / 2);
         for (k = 0; k < maxIters; k++) {
             if (rnrm <= stoppingTol) {
                 IJ.log("MRNSD converged after " + k + "iterations.");

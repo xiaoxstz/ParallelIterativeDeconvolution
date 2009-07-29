@@ -27,8 +27,8 @@ import cern.colt.matrix.tdouble.algo.solver.HyBRRegularizationMethod;
 import cern.colt.matrix.tfloat.FloatFactory2D;
 import cern.colt.matrix.tfloat.FloatMatrix1D;
 import cern.colt.matrix.tfloat.FloatMatrix2D;
-import cern.colt.matrix.tfloat.algo.decomposition.FloatSingularValueDecompositionDC;
-import cern.colt.matrix.tfloat.impl.DenseColFloatMatrix2D;
+import cern.colt.matrix.tfloat.algo.decomposition.DenseFloatSingularValueDecompositionDC;
+import cern.colt.matrix.tfloat.impl.DenseColumnFloatMatrix2D;
 import cern.colt.matrix.tfloat.impl.DenseFloatMatrix1D;
 import cern.colt.matrix.tfloat.impl.DenseFloatMatrix2D;
 import cern.jet.math.tfloat.FloatFunctions;
@@ -71,7 +71,7 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
     private float omega;
 
     /**
-     * If true then the reorthogonalization of Lanczos subspaces is performed.
+     * If true, then the reorthogonalization of Lanczos subspaces is performed.
      */
     private boolean reorth;
 
@@ -81,8 +81,7 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
     private int begReg;
 
     /**
-     * Tolerance for detecting flatness in the GCV curve as a % stopping
-     * criteria.
+     * Tolerance for detecting flatness in the GCV curve as a stopping criteria.
      */
     private float flatTol;
 
@@ -111,15 +110,18 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
      * @param options
      *            HyBR options
      */
-    public HyBRFloatIterativeDeconvolver2D(ImagePlus imB, ImagePlus[][] imPSF, PreconditionerType preconditioner, float preconditionerTol, BoundaryType boundary, ResizingType resizing, OutputType output, int maxIters, boolean showIteration, HyBROptions options) {
-        super("HyBR", imB, imPSF, preconditioner, preconditionerTol, boundary, resizing, output, options.getUseThreshold(), (float) options.getThreshold(), maxIters, showIteration, options.getLogConvergence());
+    public HyBRFloatIterativeDeconvolver2D(ImagePlus imB, ImagePlus[][] imPSF, PreconditionerType preconditioner,
+            float preconditionerTol, BoundaryType boundary, ResizingType resizing, OutputType output, int maxIters,
+            boolean showIteration, HyBROptions options) {
+        super("HyBR", imB, imPSF, preconditioner, (float)preconditionerTol, boundary, resizing, output, options
+                .getUseThreshold(), (float)options.getThreshold(), maxIters, showIteration, options.getLogConvergence());
         this.innerSolver = options.getInnerSolver();
         this.regMethod = options.getRegMethod();
-        this.regParam = (float) options.getRegParameter();
-        this.omega = (float) options.getOmega();
+        this.regParam = (float)options.getRegParameter();
+        this.omega = (float)options.getOmega();
         this.reorth = options.getReorthogonalize();
         this.begReg = options.getBeginReg();
-        this.flatTol = (float) options.getFlatTolerance();
+        this.flatTol = (float)options.getFlatTolerance();
     }
 
     @Override
@@ -142,11 +144,11 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
         float[] sv;
         FloatArrayList omegaList = new FloatArrayList(new float[begReg - 2]);
         FloatArrayList GCV = new FloatArrayList(new float[begReg - 2]);
-        FloatMatrix1D b = new DenseFloatMatrix1D(B.size(), (float[]) B.elements(), 0, 1, false);
-        FloatMatrix2D U = new DenseFloatMatrix2D(1, B.size());
+        FloatMatrix1D b = new DenseFloatMatrix1D((int) B.size(), (float[]) B.elements(), 0, 1, false);
+        FloatMatrix2D U = new DenseFloatMatrix2D(1, (int) B.size());
         FloatMatrix2D C = null;
         FloatMatrix2D V = null;
-        FloatSingularValueDecompositionDC svd;
+        DenseFloatSingularValueDecompositionDC svd;
         if (P == null) {
             beta = alg.norm2(b);
             U.viewRow(0).assign(b, FloatFunctions.multSecond(1.0f / beta));
@@ -170,7 +172,7 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
             U = lbd.getU();
             C = lbd.getC();
             V = lbd.getV();
-            v = new DenseFloatMatrix1D(U.rows());
+            v = new DenseFloatMatrix1D(C.columns() + 1);
             v.setQuick(0, beta);
             if (k >= 1) {
                 IJ.showStatus("HyBR iteration: " + k + "/" + maxIters);
@@ -292,7 +294,7 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
     }
 
     private float findOmega(FloatMatrix1D bhat, float[] s) {
-        int m = bhat.size();
+        int m = (int) bhat.size();
         int n = s.length;
         float alpha = s[n - 1];
         float t0 = bhat.viewPart(n, m - n).aggregate(FloatFunctions.plus, FloatFunctions.square);
@@ -374,7 +376,7 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
         }
 
         public float f_to_minimize(float alpha) {
-            int m = bhat.size();
+            int m = (int) bhat.size();
             int n = s.length;
             float t0 = bhat.viewPart(n, m - n).aggregate(FloatFunctions.plus, FloatFunctions.square);
             FloatMatrix1D s2 = new DenseFloatMatrix1D(s);
@@ -408,7 +410,9 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
         FloatMatrix1D t2 = t1.copy();
         t2.assign(u.viewPart(0, k), FloatFunctions.mult);
         t2.assign(FloatFunctions.mult(alpha2));
-        float num = (float) (beta2 * (t2.aggregate(FloatFunctions.plus, FloatFunctions.square) + Math.pow(Math.abs(u.getQuick(k)), 2)) / (float) n);
+        float num = (float)(beta2
+                * (t2.aggregate(FloatFunctions.plus, FloatFunctions.square) + Math.pow(Math.abs(u.getQuick(k)), 2))
+                / (float) n);
         float den = (n - t1.aggregate(s2, FloatFunctions.plus, FloatFunctions.mult)) / (float) n;
         den = den * den;
         return num / den;
@@ -425,7 +429,6 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
     }
 
     private class FloatSimpleLBD implements FloatLBD {
-
         private final FloatFactory2D factory = FloatFactory2D.dense;
 
         private final FloatMatrix2D alphaBeta = new DenseFloatMatrix2D(2, 1);
@@ -440,6 +443,8 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
 
         private boolean reorth;
 
+        private int counter = 1;
+
         public FloatSimpleLBD(FloatPSFMatrix2D A, FloatMatrix2D U, boolean reorth) {
             this.A = A;
             this.reorth = reorth;
@@ -449,50 +454,82 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
         }
 
         public void apply() {
-            int k = U.rows();
-            FloatMatrix1D u = null;
-            FloatMatrix1D v = null;
-            FloatMatrix1D column = null;
-            if (k == 1) {
-                v = A.times(U.viewRow(k - 1), true);
-            } else {
-                v = A.times(U.viewRow(k - 1), true);
-                column = V.viewColumn(k - 2);
-                v.assign(column, FloatFunctions.plusMultSecond(-C.getQuick(k - 1, k - 2)));
-                if (reorth) {
+            if (reorth) {
+                int k = U.rows();
+                FloatMatrix1D u = null;
+                FloatMatrix1D v = null;
+                FloatMatrix1D column = null;
+                if (k == 1) {
+                    v = A.times(U.viewRow(k - 1), true);
+                } else {
+                    v = A.times(U.viewRow(k - 1), true);
+                    column = V.viewColumn(k - 2);
+                    v.assign(column, FloatFunctions.plusMultSecond(-C.getQuick(k - 1, k - 2)));
                     for (int j = 0; j < k - 1; j++) {
                         column = V.viewColumn(j);
                         v.assign(column, FloatFunctions.plusMultSecond(-column.zDotProduct(v)));
                     }
                 }
-            }
-            float alpha = alg.norm2(v);
-            v.assign(FloatFunctions.div(alpha));
-            u = A.times(v, false);
-            column = U.viewRow(k - 1);
-            u.assign(column, FloatFunctions.plusMultSecond(-alpha));
-            if (reorth) {
+                float alpha = alg.norm2(v);
+                v.assign(FloatFunctions.div(alpha));
+                u = A.times(v, false);
+                column = U.viewRow(k - 1);
+                u.assign(column, FloatFunctions.plusMultSecond(-alpha));
                 for (int j = 0; j < k; j++) {
                     column = U.viewRow(j);
                     u.assign(column, FloatFunctions.plusMultSecond(-column.zDotProduct(u)));
                 }
-            }
-            float beta = alg.norm2(u);
-            alphaBeta.setQuick(0, 0, alpha);
-            alphaBeta.setQuick(1, 0, beta);
-            u.assign(FloatFunctions.div(beta));
-            U = factory.appendRow(U, u);
-            if (V == null) {
-                V = new DenseColFloatMatrix2D(v.size(), 1);
-                V.assign((float[]) v.elements());
+                float beta = alg.norm2(u);
+                alphaBeta.setQuick(0, 0, alpha);
+                alphaBeta.setQuick(1, 0, beta);
+                u.assign(FloatFunctions.div(beta));
+                U = factory.appendRow(U, u);
+                if (V == null) {
+                    V = new DenseColumnFloatMatrix2D((int) v.size(), 1);
+                    V.assign((float[]) v.elements());
+                } else {
+                    V = factory.appendColumn(V, v);
+                }
+                if (C == null) {
+                    C = new DenseFloatMatrix2D(2, 1);
+                    C.assign(alphaBeta);
+                } else {
+                    C = factory.composeBidiagonal(C, alphaBeta);
+                }
             } else {
-                V = factory.appendColumn(V, v);
-            }
-            if (C == null) {
-                C = new DenseFloatMatrix2D(2, 1);
-                C.assign(alphaBeta);
-            } else {
-                C = factory.composeBidiagonal(C, alphaBeta);
+                FloatMatrix1D u = null;
+                FloatMatrix1D v = null;
+                FloatMatrix1D column = null;
+                if (counter == 1) {
+                    v = A.times(U.viewRow(0), true);
+                } else {
+                    v = A.times(U.viewRow(0), true);
+                    column = V.viewColumn(counter - 2);
+                    v.assign(column, FloatFunctions.plusMultSecond(-C.getQuick(counter - 1, counter - 2)));
+                }
+                float alpha = alg.norm2(v);
+                v.assign(FloatFunctions.div(alpha));
+                u = A.times(v, false);
+                column = U.viewRow(0);
+                u.assign(column, FloatFunctions.plusMultSecond(-alpha));
+                float beta = alg.norm2(u);
+                alphaBeta.setQuick(0, 0, alpha);
+                alphaBeta.setQuick(1, 0, beta);
+                u.assign(FloatFunctions.div(beta));
+                U.viewRow(0).assign(u);
+                if (V == null) {
+                    V = new DenseColumnFloatMatrix2D((int) v.size(), 1);
+                    V.assign((float[]) v.elements());
+                } else {
+                    V = factory.appendColumn(V, v);
+                }
+                if (C == null) {
+                    C = new DenseFloatMatrix2D(2, 1);
+                    C.assign(alphaBeta);
+                } else {
+                    C = factory.composeBidiagonal(C, alphaBeta);
+                }
+                counter++;
             }
         }
 
@@ -526,6 +563,8 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
         private FloatMatrix2D V;
 
         private boolean reorth;
+        
+        private int counter = 1;
 
         public FloatPLBD(FloatPreconditioner2D P, FloatPSFMatrix2D A, FloatMatrix2D U, boolean reorth) {
             this.P = P;
@@ -537,58 +576,94 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
         }
 
         public void apply() {
-            int k = U.rows();
-            FloatMatrix1D u = null;
-            FloatMatrix1D v = null;
-            FloatMatrix1D row = null;
-            if (k == 1) {
-                row = U.viewRow(k - 1).copy();
-                row = P.solve(row, true);
-                v = A.times(row, true);
-            } else {
-                row = U.viewRow(k - 1).copy();
-                row = P.solve(row, true);
-                v = A.times(row, true);
-                row = V.viewColumn(k - 2);
-                v.assign(row, FloatFunctions.plusMultSecond(-C.getQuick(k - 1, k - 2)));
-                if (reorth) {
+            if (reorth) {
+                int k = U.rows();
+                FloatMatrix1D u = null;
+                FloatMatrix1D v = null;
+                FloatMatrix1D row = null;
+                if (k == 1) {
+                    row = U.viewRow(k - 1).copy();
+                    row = P.solve(row, true);
+                    v = A.times(row, true);
+                } else {
+                    row = U.viewRow(k - 1).copy();
+                    row = P.solve(row, true);
+                    v = A.times(row, true);
+                    row = V.viewColumn(k - 2);
+                    v.assign(row, FloatFunctions.plusMultSecond(-C.getQuick(k - 1, k - 2)));
                     for (int j = 0; j < k - 1; j++) {
                         row = V.viewColumn(j);
                         v.assign(row, FloatFunctions.plusMultSecond(-row.zDotProduct(v)));
                     }
                 }
-            }
-            float alpha = alg.norm2(v);
-            v.assign(FloatFunctions.div(alpha));
-            row = A.times(v, false);
-            u = P.solve(row, false);
-            row = U.viewRow(k - 1);
-            u.assign(row, FloatFunctions.plusMultSecond(-alpha));
-            if (reorth) {
+                float alpha = alg.norm2(v);
+                v.assign(FloatFunctions.div(alpha));
+                row = A.times(v, false);
+                u = P.solve(row, false);
+                row = U.viewRow(k - 1);
+                u.assign(row, FloatFunctions.plusMultSecond(-alpha));
                 for (int j = 0; j < k; j++) {
                     row = U.viewRow(j);
                     u.assign(row, FloatFunctions.plusMultSecond(-row.zDotProduct(u)));
                 }
-            }
-            float beta = alg.norm2(u);
-            alphaBeta.setQuick(0, 0, alpha);
-            alphaBeta.setQuick(1, 0, beta);
-            u.assign(FloatFunctions.div(beta));
-            U = factory.appendRow(U, u);
-            if (V == null) {
-                V = new DenseColFloatMatrix2D(v.size(), 1);
-                V.assign((float[]) v.elements());
+                float beta = alg.norm2(u);
+                alphaBeta.setQuick(0, 0, alpha);
+                alphaBeta.setQuick(1, 0, beta);
+                u.assign(FloatFunctions.div(beta));
+                U = factory.appendRow(U, u);
+                if (V == null) {
+                    V = new DenseColumnFloatMatrix2D((int) v.size(), 1);
+                    V.assign((float[]) v.elements());
+                } else {
+                    V = factory.appendColumn(V, v);
+                }
+                if (C == null) {
+                    C = new DenseFloatMatrix2D(2, 1);
+                    C.assign(alphaBeta);
+                } else {
+                    C = factory.composeBidiagonal(C, alphaBeta);
+                }
             } else {
-                V = factory.appendColumn(V, v);
-            }
-            if (C == null) {
-                C = new DenseFloatMatrix2D(2, 1);
-                C.assign(alphaBeta);
-            } else {
-                C = factory.composeBidiagonal(C, alphaBeta);
+                FloatMatrix1D u = null;
+                FloatMatrix1D v = null;
+                FloatMatrix1D row = null;
+                if (counter == 1) {
+                    row = U.viewRow(0).copy();
+                    row = P.solve(row, true);
+                    v = A.times(row, true);
+                } else {
+                    row = U.viewRow(0).copy();
+                    row = P.solve(row, true);
+                    v = A.times(row, true);
+                    row = V.viewColumn(counter - 2);
+                    v.assign(row, FloatFunctions.plusMultSecond(-C.getQuick(counter - 1, counter - 2)));
+                }
+                float alpha = alg.norm2(v);
+                v.assign(FloatFunctions.div(alpha));
+                row = A.times(v, false);
+                u = P.solve(row, false);
+                row = U.viewRow(0);
+                u.assign(row, FloatFunctions.plusMultSecond(-alpha));
+                float beta = alg.norm2(u);
+                alphaBeta.setQuick(0, 0, alpha);
+                alphaBeta.setQuick(1, 0, beta);
+                u.assign(FloatFunctions.div(beta));
+                U.viewRow(0).assign(u);
+                if (V == null) {
+                    V = new DenseColumnFloatMatrix2D((int) v.size(), 1);
+                    V.assign((float[]) v.elements());
+                } else {
+                    V = factory.appendColumn(V, v);
+                }
+                if (C == null) {
+                    C = new DenseFloatMatrix2D(2, 1);
+                    C.assign(alphaBeta);
+                } else {
+                    C = factory.composeBidiagonal(C, alphaBeta);
+                }
+                counter++;
             }
         }
-
         public FloatMatrix2D getC() {
             return C;
         }

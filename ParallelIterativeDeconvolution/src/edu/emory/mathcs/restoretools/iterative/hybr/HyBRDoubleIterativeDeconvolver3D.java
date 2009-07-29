@@ -25,10 +25,10 @@ import cern.colt.list.tdouble.DoubleArrayList;
 import cern.colt.matrix.tdouble.DoubleFactory2D;
 import cern.colt.matrix.tdouble.DoubleMatrix1D;
 import cern.colt.matrix.tdouble.DoubleMatrix2D;
-import cern.colt.matrix.tdouble.algo.decomposition.DoubleSingularValueDecompositionDC;
+import cern.colt.matrix.tdouble.algo.decomposition.DenseDoubleSingularValueDecompositionDC;
 import cern.colt.matrix.tdouble.algo.solver.HyBRInnerSolver;
 import cern.colt.matrix.tdouble.algo.solver.HyBRRegularizationMethod;
-import cern.colt.matrix.tdouble.impl.DenseColDoubleMatrix2D;
+import cern.colt.matrix.tdouble.impl.DenseColumnDoubleMatrix2D;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.tdouble.impl.DenseDoubleMatrix2D;
 import cern.jet.math.tdouble.DoubleFunctions;
@@ -149,11 +149,11 @@ public class HyBRDoubleIterativeDeconvolver3D extends AbstractDoubleIterativeDec
         double[] sv;
         DoubleArrayList omegaList = new DoubleArrayList(new double[begReg - 2]);
         DoubleArrayList GCV = new DoubleArrayList(new double[begReg - 2]);
-        DoubleMatrix1D b = new DenseDoubleMatrix1D(B.size(), (double[]) B.elements(), 0, 1, false);
-        DoubleMatrix2D U = new DenseDoubleMatrix2D(1, B.size());
+        DoubleMatrix1D b = new DenseDoubleMatrix1D((int)B.size(), (double[]) B.elements(), 0, 1, false);
+        DoubleMatrix2D U = new DenseDoubleMatrix2D(1, (int)B.size());
         DoubleMatrix2D C = null;
         DoubleMatrix2D V = null;
-        DoubleSingularValueDecompositionDC svd;
+        DenseDoubleSingularValueDecompositionDC svd;
         if (P == null) {
             beta = alg.norm2(b);
             U.viewRow(0).assign(b, DoubleFunctions.multSecond(1.0 / beta));
@@ -177,7 +177,7 @@ public class HyBRDoubleIterativeDeconvolver3D extends AbstractDoubleIterativeDec
             U = lbd.getU();
             C = lbd.getC();
             V = lbd.getV();
-            v = new DenseDoubleMatrix1D(U.rows());
+            v = new DenseDoubleMatrix1D(C.columns() + 1);
             v.setQuick(0, beta);
             if (k >= 1) {
                 IJ.showStatus("HyBR iteration: " + k + "/" + maxIters);
@@ -308,7 +308,7 @@ public class HyBRDoubleIterativeDeconvolver3D extends AbstractDoubleIterativeDec
     }
 
     private double findOmega(DoubleMatrix1D bhat, double[] s) {
-        int m = bhat.size();
+        int m = (int)bhat.size();
         int n = s.length;
         double alpha = s[n - 1];
         double t0 = bhat.viewPart(n, m - n).aggregate(DoubleFunctions.plus, DoubleFunctions.square);
@@ -390,7 +390,7 @@ public class HyBRDoubleIterativeDeconvolver3D extends AbstractDoubleIterativeDec
         }
 
         public double f_to_minimize(double alpha) {
-            int m = bhat.size();
+            int m = (int)bhat.size();
             int n = s.length;
             double t0 = bhat.viewPart(n, m - n).aggregate(DoubleFunctions.plus, DoubleFunctions.square);
             DoubleMatrix1D s2 = new DenseDoubleMatrix1D(s);
@@ -441,7 +441,6 @@ public class HyBRDoubleIterativeDeconvolver3D extends AbstractDoubleIterativeDec
     }
 
     private class DoubleSimpleLBD implements DoubleLBD {
-
         private final DoubleFactory2D factory = DoubleFactory2D.dense;
 
         private final DoubleMatrix2D alphaBeta = new DenseDoubleMatrix2D(2, 1);
@@ -456,6 +455,8 @@ public class HyBRDoubleIterativeDeconvolver3D extends AbstractDoubleIterativeDec
 
         private boolean reorth;
 
+        private int counter = 1;
+
         public DoubleSimpleLBD(DoublePSFMatrix3D A, DoubleMatrix2D U, boolean reorth) {
             this.A = A;
             this.reorth = reorth;
@@ -465,50 +466,82 @@ public class HyBRDoubleIterativeDeconvolver3D extends AbstractDoubleIterativeDec
         }
 
         public void apply() {
-            int k = U.rows();
-            DoubleMatrix1D u = null;
-            DoubleMatrix1D v = null;
-            DoubleMatrix1D column = null;
-            if (k == 1) {
-                v = A.times(U.viewRow(k - 1), true);
-            } else {
-                v = A.times(U.viewRow(k - 1), true);
-                column = V.viewColumn(k - 2);
-                v.assign(column, DoubleFunctions.plusMultSecond(-C.getQuick(k - 1, k - 2)));
-                if (reorth) {
+            if (reorth) {
+                int k = U.rows();
+                DoubleMatrix1D u = null;
+                DoubleMatrix1D v = null;
+                DoubleMatrix1D column = null;
+                if (k == 1) {
+                    v = A.times(U.viewRow(k - 1), true);
+                } else {
+                    v = A.times(U.viewRow(k - 1), true);
+                    column = V.viewColumn(k - 2);
+                    v.assign(column, DoubleFunctions.plusMultSecond(-C.getQuick(k - 1, k - 2)));
                     for (int j = 0; j < k - 1; j++) {
                         column = V.viewColumn(j);
                         v.assign(column, DoubleFunctions.plusMultSecond(-column.zDotProduct(v)));
                     }
                 }
-            }
-            double alpha = alg.norm2(v);
-            v.assign(DoubleFunctions.div(alpha));
-            u = A.times(v, false);
-            column = U.viewRow(k - 1);
-            u.assign(column, DoubleFunctions.plusMultSecond(-alpha));
-            if (reorth) {
+                double alpha = alg.norm2(v);
+                v.assign(DoubleFunctions.div(alpha));
+                u = A.times(v, false);
+                column = U.viewRow(k - 1);
+                u.assign(column, DoubleFunctions.plusMultSecond(-alpha));
                 for (int j = 0; j < k; j++) {
                     column = U.viewRow(j);
                     u.assign(column, DoubleFunctions.plusMultSecond(-column.zDotProduct(u)));
                 }
-            }
-            double beta = alg.norm2(u);
-            alphaBeta.setQuick(0, 0, alpha);
-            alphaBeta.setQuick(1, 0, beta);
-            u.assign(DoubleFunctions.div(beta));
-            U = factory.appendRow(U, u);
-            if (V == null) {
-                V = new DenseColDoubleMatrix2D(v.size(), 1);
-                V.assign((double[]) v.elements());
+                double beta = alg.norm2(u);
+                alphaBeta.setQuick(0, 0, alpha);
+                alphaBeta.setQuick(1, 0, beta);
+                u.assign(DoubleFunctions.div(beta));
+                U = factory.appendRow(U, u);
+                if (V == null) {
+                    V = new DenseColumnDoubleMatrix2D((int) v.size(), 1);
+                    V.assign((double[]) v.elements());
+                } else {
+                    V = factory.appendColumn(V, v);
+                }
+                if (C == null) {
+                    C = new DenseDoubleMatrix2D(2, 1);
+                    C.assign(alphaBeta);
+                } else {
+                    C = factory.composeBidiagonal(C, alphaBeta);
+                }
             } else {
-                V = factory.appendColumn(V, v);
-            }
-            if (C == null) {
-                C = new DenseDoubleMatrix2D(2, 1);
-                C.assign(alphaBeta);
-            } else {
-                C = factory.composeBidiagonal(C, alphaBeta);
+                DoubleMatrix1D u = null;
+                DoubleMatrix1D v = null;
+                DoubleMatrix1D column = null;
+                if (counter == 1) {
+                    v = A.times(U.viewRow(0), true);
+                } else {
+                    v = A.times(U.viewRow(0), true);
+                    column = V.viewColumn(counter - 2);
+                    v.assign(column, DoubleFunctions.plusMultSecond(-C.getQuick(counter - 1, counter - 2)));
+                }
+                double alpha = alg.norm2(v);
+                v.assign(DoubleFunctions.div(alpha));
+                u = A.times(v, false);
+                column = U.viewRow(0);
+                u.assign(column, DoubleFunctions.plusMultSecond(-alpha));
+                double beta = alg.norm2(u);
+                alphaBeta.setQuick(0, 0, alpha);
+                alphaBeta.setQuick(1, 0, beta);
+                u.assign(DoubleFunctions.div(beta));
+                U.viewRow(0).assign(u);
+                if (V == null) {
+                    V = new DenseColumnDoubleMatrix2D((int) v.size(), 1);
+                    V.assign((double[]) v.elements());
+                } else {
+                    V = factory.appendColumn(V, v);
+                }
+                if (C == null) {
+                    C = new DenseDoubleMatrix2D(2, 1);
+                    C.assign(alphaBeta);
+                } else {
+                    C = factory.composeBidiagonal(C, alphaBeta);
+                }
+                counter++;
             }
         }
 
@@ -542,6 +575,8 @@ public class HyBRDoubleIterativeDeconvolver3D extends AbstractDoubleIterativeDec
         private DoubleMatrix2D V;
 
         private boolean reorth;
+        
+        private int counter = 1;
 
         public DoublePLBD(DoublePreconditioner3D P, DoublePSFMatrix3D A, DoubleMatrix2D U, boolean reorth) {
             this.P = P;
@@ -553,58 +588,94 @@ public class HyBRDoubleIterativeDeconvolver3D extends AbstractDoubleIterativeDec
         }
 
         public void apply() {
-            int k = U.rows();
-            DoubleMatrix1D u = null;
-            DoubleMatrix1D v = null;
-            DoubleMatrix1D row = null;
-            if (k == 1) {
-                row = U.viewRow(k - 1).copy();
-                row = P.solve(row, true);
-                v = A.times(row, true);
-            } else {
-                row = U.viewRow(k - 1).copy();
-                row = P.solve(row, true);
-                v = A.times(row, true);
-                row = V.viewColumn(k - 2);
-                v.assign(row, DoubleFunctions.plusMultSecond(-C.getQuick(k - 1, k - 2)));
-                if (reorth) {
+            if (reorth) {
+                int k = U.rows();
+                DoubleMatrix1D u = null;
+                DoubleMatrix1D v = null;
+                DoubleMatrix1D row = null;
+                if (k == 1) {
+                    row = U.viewRow(k - 1).copy();
+                    row = P.solve(row, true);
+                    v = A.times(row, true);
+                } else {
+                    row = U.viewRow(k - 1).copy();
+                    row = P.solve(row, true);
+                    v = A.times(row, true);
+                    row = V.viewColumn(k - 2);
+                    v.assign(row, DoubleFunctions.plusMultSecond(-C.getQuick(k - 1, k - 2)));
                     for (int j = 0; j < k - 1; j++) {
                         row = V.viewColumn(j);
                         v.assign(row, DoubleFunctions.plusMultSecond(-row.zDotProduct(v)));
                     }
                 }
-            }
-            double alpha = alg.norm2(v);
-            v.assign(DoubleFunctions.div(alpha));
-            row = A.times(v, false);
-            u = P.solve(row, false);
-            row = U.viewRow(k - 1);
-            u.assign(row, DoubleFunctions.plusMultSecond(-alpha));
-            if (reorth) {
+                double alpha = alg.norm2(v);
+                v.assign(DoubleFunctions.div(alpha));
+                row = A.times(v, false);
+                u = P.solve(row, false);
+                row = U.viewRow(k - 1);
+                u.assign(row, DoubleFunctions.plusMultSecond(-alpha));
                 for (int j = 0; j < k; j++) {
                     row = U.viewRow(j);
                     u.assign(row, DoubleFunctions.plusMultSecond(-row.zDotProduct(u)));
                 }
-            }
-            double beta = alg.norm2(u);
-            alphaBeta.setQuick(0, 0, alpha);
-            alphaBeta.setQuick(1, 0, beta);
-            u.assign(DoubleFunctions.div(beta));
-            U = factory.appendRow(U, u);
-            if (V == null) {
-                V = new DenseColDoubleMatrix2D(v.size(), 1);
-                V.assign((double[]) v.elements());
+                double beta = alg.norm2(u);
+                alphaBeta.setQuick(0, 0, alpha);
+                alphaBeta.setQuick(1, 0, beta);
+                u.assign(DoubleFunctions.div(beta));
+                U = factory.appendRow(U, u);
+                if (V == null) {
+                    V = new DenseColumnDoubleMatrix2D((int) v.size(), 1);
+                    V.assign((double[]) v.elements());
+                } else {
+                    V = factory.appendColumn(V, v);
+                }
+                if (C == null) {
+                    C = new DenseDoubleMatrix2D(2, 1);
+                    C.assign(alphaBeta);
+                } else {
+                    C = factory.composeBidiagonal(C, alphaBeta);
+                }
             } else {
-                V = factory.appendColumn(V, v);
-            }
-            if (C == null) {
-                C = new DenseDoubleMatrix2D(2, 1);
-                C.assign(alphaBeta);
-            } else {
-                C = factory.composeBidiagonal(C, alphaBeta);
+                DoubleMatrix1D u = null;
+                DoubleMatrix1D v = null;
+                DoubleMatrix1D row = null;
+                if (counter == 1) {
+                    row = U.viewRow(0).copy();
+                    row = P.solve(row, true);
+                    v = A.times(row, true);
+                } else {
+                    row = U.viewRow(0).copy();
+                    row = P.solve(row, true);
+                    v = A.times(row, true);
+                    row = V.viewColumn(counter - 2);
+                    v.assign(row, DoubleFunctions.plusMultSecond(-C.getQuick(counter - 1, counter - 2)));
+                }
+                double alpha = alg.norm2(v);
+                v.assign(DoubleFunctions.div(alpha));
+                row = A.times(v, false);
+                u = P.solve(row, false);
+                row = U.viewRow(0);
+                u.assign(row, DoubleFunctions.plusMultSecond(-alpha));
+                double beta = alg.norm2(u);
+                alphaBeta.setQuick(0, 0, alpha);
+                alphaBeta.setQuick(1, 0, beta);
+                u.assign(DoubleFunctions.div(beta));
+                U.viewRow(0).assign(u);
+                if (V == null) {
+                    V = new DenseColumnDoubleMatrix2D((int) v.size(), 1);
+                    V.assign((double[]) v.elements());
+                } else {
+                    V = factory.appendColumn(V, v);
+                }
+                if (C == null) {
+                    C = new DenseDoubleMatrix2D(2, 1);
+                    C.assign(alphaBeta);
+                } else {
+                    C = factory.composeBidiagonal(C, alphaBeta);
+                }
+                counter++;
             }
         }
-
         public DoubleMatrix2D getC() {
             return C;
         }

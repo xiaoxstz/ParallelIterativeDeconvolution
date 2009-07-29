@@ -235,7 +235,7 @@ public class FloatPSFMatrix3D {
             B = new DenseFloatMatrix3D(imSize[0], imSize[1], imSize[2], (float[]) b.elements(), 0, 0, 0, imSize[1] * imSize[2], imSize[2], 1, false);
         }
         B = times(B, transpose);
-        return new DenseFloatMatrix1D(B.size(), (float[]) B.elements(), 0, 1, false);
+        return new DenseFloatMatrix1D((int)B.size(), (float[]) B.elements(), 0, 1, false);
 
     }
 

@@ -948,7 +948,7 @@ public class ParallelIterativeDeconvolution3D implements PlugIn, ImageListener {
         return pathToDeblurredImage;
     }
 
-    private final static String version = "1.9";
+    private final static String version = "1.10";
 
     private static final String[] methodNames = { "MRNSD", "WPL", "CGLS", "HyBR" };
 
@@ -1732,7 +1732,7 @@ public class ParallelIterativeDeconvolution3D implements PlugIn, ImageListener {
                 }
                 if (threshold < 0.0) {
                     IJ.error("Threshold must be a nonnegative value.");
-                    return true;
+                    return false;
                 }
             }
             hybrOptions.setInnerSolver(HyBRInnerSolver.values()[solverChoice.getSelectedIndex()]);
@@ -1768,7 +1768,7 @@ public class ParallelIterativeDeconvolution3D implements PlugIn, ImageListener {
 
             JPanel normalizePanel = new JPanel();
             normalizePanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-            normalizeCheck = new JCheckBox("Narmalize PSF");
+            normalizeCheck = new JCheckBox("Normalize PSF");
             normalizeCheck.setSelected(true);
             normalizePanel.add(normalizeCheck);
             add(normalizePanel);
@@ -2170,7 +2170,7 @@ public class ParallelIterativeDeconvolution3D implements PlugIn, ImageListener {
 
         JButton[][][] buttons;
 
-        JButton nextButton, previousButton, okButton, cancelButton;
+        JButton nextButton, previousButton, cancelButton;
 
         JPanel[] tablePanels;
 
@@ -2338,7 +2338,6 @@ public class ParallelIterativeDeconvolution3D implements PlugIn, ImageListener {
 
         public MainPanel(String name) {
             super(name);
-            ConcurrencyUtils.setUseJCublas(false);
             windowIDs = WindowManager.getIDList();
             if (windowIDs != null) {
                 imageTitles = new String[windowIDs.length];
@@ -2360,7 +2359,7 @@ public class ParallelIterativeDeconvolution3D implements PlugIn, ImageListener {
             // --------------------------------------------------------------
             JPanel blurPanel = new JPanel();
             blurPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-            JLabel blurLabel = new JLabel("Blurred image:");
+            JLabel blurLabel = new JLabel("Image:");
             blurLabel.setPreferredSize(new Dimension(90, blurLabel.getPreferredSize().height));
             blurPanel.add(blurLabel);
             if (windowIDs != null) {
@@ -2494,7 +2493,7 @@ public class ParallelIterativeDeconvolution3D implements PlugIn, ImageListener {
             // --------------------------------------------------------------
             JPanel precisionPanel = new JPanel();
             precisionPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-            JLabel precisionLabel = new JLabel("PrecisionType:");
+            JLabel precisionLabel = new JLabel("Precision:");
             precisionLabel.setPreferredSize(new Dimension(90, precisionLabel.getPreferredSize().height));
             precisionPanel.add(precisionLabel);
             precisionChoice = new JComboBox(precisionNames);

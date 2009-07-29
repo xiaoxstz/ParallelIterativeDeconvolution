@@ -1,5 +1,9 @@
 Parallel Iterative Deconvolution changelog
 
+1.10:	July 29, 2009
+	- Memory optimization in HyBR.
+	- The plugin is updated to use Parallel Colt 0.8.2.
+
 1.9:	April 11, 2009
 	- Added IterativeDeconvolver interface and abstract classes for 2D and 3D iterative algorithms.	
 	- Non-preconditioned and preconditioned algorithms have been merged.

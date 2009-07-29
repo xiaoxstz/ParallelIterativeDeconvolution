@@ -236,7 +236,7 @@ public class DoublePSFMatrix3D {
             B = new DenseDoubleMatrix3D(imSize[0], imSize[1], imSize[2], (double[]) b.elements(), 0, 0, 0, imSize[1] * imSize[2], imSize[2], 1, false);
         }
         B = times(B, transpose);
-        return new DenseDoubleMatrix1D(B.size(), (double[]) B.elements(), 0, 1, false);
+        return new DenseDoubleMatrix1D((int)B.size(), (double[]) B.elements(), 0, 1, false);
     }
 
     /**
