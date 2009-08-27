@@ -124,7 +124,7 @@ public class HyBRDoubleIterativeDeconvolver2D extends AbstractDoubleIterativeDec
         this.flatTol = options.getFlatTolerance();
     }
 
-    @Override
+    
     public ImagePlus deconvolve() {
         int k;
         int columns = A.getSize()[1];

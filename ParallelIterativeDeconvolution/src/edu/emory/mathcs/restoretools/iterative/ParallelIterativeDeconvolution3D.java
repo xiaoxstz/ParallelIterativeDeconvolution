@@ -948,7 +948,7 @@ public class ParallelIterativeDeconvolution3D implements PlugIn, ImageListener {
         return pathToDeblurredImage;
     }
 
-    private final static String version = "1.10";
+    private final static String version = "1.11";
 
     private static final String[] methodNames = { "MRNSD", "WPL", "CGLS", "HyBR" };
 
@@ -2956,6 +2956,7 @@ public class ParallelIterativeDeconvolution3D implements PlugIn, ImageListener {
                 mainPanel.dispose();
                 ImagePlus.removeImageListener(getImageListener());
                 clean_all();
+                ConcurrencyUtils.shutdown();
             }
         }
 

@@ -129,7 +129,7 @@ public class HyBRFloatIterativeDeconvolver3D extends AbstractFloatIterativeDecon
         bsize = new int[] { bSlices, bRows, bColumns };
     }
 
-    @Override
+    
     public ImagePlus deconvolve() {
         int k;
         int columns = A.getSize()[1];

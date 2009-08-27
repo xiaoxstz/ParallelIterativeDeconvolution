@@ -71,7 +71,7 @@ public class FloatCommon2D {
     public static FloatMatrix2D assignPixelsToMatrix(final ImageProcessor ip) {
         FloatMatrix2D X;
         if (ip instanceof FloatProcessor) {
-            X = new DenseFloatMatrix2D(ip.getHeight(), ip.getWidth(), (float[]) ip.getPixels(), 0, 0, ip.getWidth(), 1, false);
+            X = new DenseFloatMatrix2D(ip.getHeight(), ip.getWidth(), ((float[]) ip.getPixels()).clone(), 0, 0, ip.getWidth(), 1, false);
         } else {
             X = new DenseFloatMatrix2D(ip.getHeight(), ip.getWidth(), (float[]) ip.convertToFloat().getPixels(), 0, 0, ip.getWidth(), 1, false);
         }

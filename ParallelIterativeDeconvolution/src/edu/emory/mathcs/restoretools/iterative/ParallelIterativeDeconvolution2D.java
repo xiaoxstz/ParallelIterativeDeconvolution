@@ -939,7 +939,7 @@ public class ParallelIterativeDeconvolution2D implements PlugIn, ImageListener {
         return pathToDeblurredImage;
     }
 
-    private final static String version = "1.10";
+    private final static String version = "1.11";
 
     private static final String[] methodNames = { "MRNSD", "WPL", "CGLS", "HyBR" };
 
@@ -1066,7 +1066,7 @@ public class ParallelIterativeDeconvolution2D implements PlugIn, ImageListener {
         fmrnsd = null;
         fhybr = null;
         fwpl = null;
-        System.gc();
+        
     }
 
     private void clean_all() {
@@ -1076,7 +1076,7 @@ public class ParallelIterativeDeconvolution2D implements PlugIn, ImageListener {
         imX = null;
         windowIDs = null;
         imageTitles = null;
-        System.gc();
+        
     }
 
     private class MRNSDOptionsPanel extends JFrame {
@@ -2812,6 +2812,7 @@ public class ParallelIterativeDeconvolution2D implements PlugIn, ImageListener {
                 mainPanel.dispose();
                 ImagePlus.removeImageListener(getImageListener());
                 clean_all();
+                ConcurrencyUtils.shutdown();
             }
         }
 

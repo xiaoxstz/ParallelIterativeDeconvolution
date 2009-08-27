@@ -129,7 +129,7 @@ public class HyBRDoubleIterativeDeconvolver3D extends AbstractDoubleIterativeDec
         bsize = new int[] { bSlices, bRows, bColumns };
     }
 
-    @Override
+    
     public ImagePlus deconvolve() {
         int k;
         int columns = A.getSize()[1];

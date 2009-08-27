@@ -91,7 +91,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             cgls = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -117,7 +117,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             cgls = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -143,7 +143,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             mrnsd = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -169,7 +169,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             mrnsd = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -195,7 +195,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             hybr = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -221,7 +221,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             hybr = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -247,7 +247,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             wpl = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -273,7 +273,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             wpl = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -299,7 +299,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             cgls = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -325,7 +325,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             cgls = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -351,7 +351,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             mrnsd = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -377,7 +377,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             mrnsd = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -403,7 +403,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             hybr = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -429,7 +429,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             hybr = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -455,7 +455,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             wpl = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -481,7 +481,7 @@ public class Benchmark2D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             wpl = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -525,108 +525,108 @@ public class Benchmark2D {
 
     public static void main(String[] args) {
         // benchmarkDoubleCGLS2D(1);
-        // System.gc();
+        // 
         // benchmarkDoubleCGLS2D(2);
-        // System.gc();
+        // 
         // benchmarkDoubleCGLS2D(4);
-        // System.gc();
+        // 
         // benchmarkDoubleCGLS2D(8);
-        // System.gc();
+        // 
         // benchmarkDoublePCGLS2D(1);
-        // System.gc();
+        // 
         // benchmarkDoublePCGLS2D(2);
-        // System.gc();
+        // 
         // benchmarkDoublePCGLS2D(4);
-        // System.gc();
+        // 
         // benchmarkDoublePCGLS2D(8);
-        // System.gc();
+        // 
         // benchmarkDoubleMRNSD2D(1);
-        // System.gc();
+        // 
         // benchmarkDoubleMRNSD2D(2);
-        // System.gc();
+        // 
         // benchmarkDoubleMRNSD2D(4);
-        // System.gc();
+        // 
         // benchmarkDoubleMRNSD2D(8);
-        // System.gc();
+        // 
         // benchmarkDoublePMRNSD2D(1);
-        // System.gc();
+        // 
         // benchmarkDoublePMRNSD2D(2);
-        // System.gc();
+        // 
         // benchmarkDoublePMRNSD2D(4);
-        // System.gc();
+        // 
         // benchmarkDoublePMRNSD2D(8);
-        // System.gc();
+        // 
         // benchmarkDoubleHyBR2D(1);
-        // System.gc();
+        // 
         // benchmarkDoubleHyBR2D(2);
-        // System.gc();
+        // 
         // benchmarkDoubleHyBR2D(4);
-        // System.gc();
+        // 
         // benchmarkDoubleHyBR2D(8);
-        // System.gc();
+        // 
         // benchmarkDoublePHyBR2D(1);
-        // System.gc();
+        // 
         // benchmarkDoublePHyBR2D(2);
-        // System.gc();
+        // 
         // benchmarkDoublePHyBR2D(4);
-        // System.gc();
+        // 
         // benchmarkDoublePHyBR2D(8);
-        // System.gc();
+        // 
         //
         // benchmarkFloatCGLS2D(1);
-        // System.gc();
+        // 
         // benchmarkFloatCGLS2D(2);
-        // System.gc();
+        // 
         // benchmarkFloatCGLS2D(4);
-        // System.gc();
+        // 
         // benchmarkFloatCGLS2D(8);
-        // System.gc();
+        // 
         benchmarkFloatPWPL2D(1);
-        System.gc();
+        
         benchmarkFloatPWPL2D(2);
-        System.gc();
+        
         benchmarkFloatPWPL2D(4);
-        System.gc();
+        
         benchmarkFloatPWPL2D(8);
-        System.gc();
+        
         benchmarkFloatPHyBR2D(1);
-        System.gc();
+        
         benchmarkFloatPHyBR2D(2);
-        System.gc();
+        
         benchmarkFloatPHyBR2D(4);
-        System.gc();
+        
         benchmarkFloatPHyBR2D(8);
-        System.gc();
+        
         benchmarkFloatPCGLS2D(1);
-        System.gc();
+        
         benchmarkFloatPCGLS2D(2);
-        System.gc();
+        
         benchmarkFloatPCGLS2D(4);
-        System.gc();
+        
         benchmarkFloatPCGLS2D(8);
-        System.gc();
+        
         // benchmarkFloatMRNSD2D(1);
-        // System.gc();
+        // 
         // benchmarkFloatMRNSD2D(2);
-        // System.gc();
+        // 
         // benchmarkFloatMRNSD2D(4);
-        // System.gc();
+        // 
         // benchmarkFloatMRNSD2D(8);
-        // System.gc();
+        // 
         benchmarkFloatPMRNSD2D(1);
-        System.gc();
+        
         benchmarkFloatPMRNSD2D(2);
-        System.gc();
+        
         benchmarkFloatPMRNSD2D(4);
-        System.gc();
+        
         benchmarkFloatPMRNSD2D(8);
-        //				System.gc();
+        //				
         //		benchmarkFloatHyBR2D(1);
-        //		System.gc();
+        //		
         //		benchmarkFloatHyBR2D(2);
-        //		System.gc();
+        //		
         //		benchmarkFloatHyBR2D(4);
-        //		System.gc();
+        //		
         //		benchmarkFloatHyBR2D(8);
         System.exit(0);
 

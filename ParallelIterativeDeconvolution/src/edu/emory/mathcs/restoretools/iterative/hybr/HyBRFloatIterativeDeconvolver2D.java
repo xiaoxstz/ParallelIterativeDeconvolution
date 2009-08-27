@@ -124,7 +124,7 @@ public class HyBRFloatIterativeDeconvolver2D extends AbstractFloatIterativeDecon
         this.flatTol = (float)options.getFlatTolerance();
     }
 
-    @Override
+    
     public ImagePlus deconvolve() {
         int k;
         int columns = A.getSize()[1];

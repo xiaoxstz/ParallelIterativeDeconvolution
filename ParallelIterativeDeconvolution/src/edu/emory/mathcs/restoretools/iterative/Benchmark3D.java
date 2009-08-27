@@ -93,7 +93,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             cgls = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -119,7 +119,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             cgls = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -145,7 +145,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             mrnsd = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -171,7 +171,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             mrnsd = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -197,7 +197,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             hybr = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -223,7 +223,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             hybr = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -249,7 +249,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             wpl = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -275,7 +275,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             wpl = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -301,7 +301,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             cgls = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -327,7 +327,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             cgls = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -353,7 +353,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             mrnsd = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -379,7 +379,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             mrnsd = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -405,7 +405,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             hybr = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -431,7 +431,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             hybr = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -457,7 +457,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             wpl = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -483,7 +483,7 @@ public class Benchmark3D {
             av_time_deblur = av_time_deblur + elapsedTime_deblur;
             wpl = null;
             imX = null;
-            System.gc();
+            
         }
         blurImage = null;
         psfImage = null;
@@ -528,110 +528,110 @@ public class Benchmark3D {
     public static void main(String[] args) {
 
         // benchmarkDoubleCGLS3D(1);
-        // System.gc();
+        // 
         // benchmarkDoubleCGLS3D(2);
-        // System.gc();
+        // 
         // benchmarkDoubleCGLS3D(4);
-        // System.gc();
+        // 
         // benchmarkDoubleCGLS3D(8);
-        // System.gc();
+        // 
         // benchmarkDoublePCGLS3D(1);
-        // System.gc();
+        // 
         // benchmarkDoublePCGLS3D(2);
-        // System.gc();
+        // 
         // benchmarkDoublePCGLS3D(4);
-        // System.gc();
+        // 
         // benchmarkDoublePCGLS3D(8);
-        // System.gc();
+        // 
         // benchmarkDoubleMRNSD3D(1);
-        // System.gc();
+        // 
         // benchmarkDoubleMRNSD3D(2);
-        // System.gc();
+        // 
         // benchmarkDoubleMRNSD3D(4);
-        // System.gc();
+        // 
         // benchmarkDoubleMRNSD3D(8);
-        // System.gc();
+        // 
         // benchmarkDoublePMRNSD3D(1);
-        // System.gc();
+        // 
         // benchmarkDoublePMRNSD3D(2);
-        // System.gc();
+        // 
         // benchmarkDoublePMRNSD3D(4);
-        // System.gc();
+        // 
         // benchmarkDoublePMRNSD3D(8);
-        // System.gc();
+        // 
         // benchmarkDoubleHyBR3D(1);
-        // System.gc();
+        // 
         // benchmarkDoubleHyBR3D(2);
-        // System.gc();
+        // 
         // benchmarkDoubleHyBR3D(4);
-        // System.gc();
+        // 
         // benchmarkDoubleHyBR3D(8);
-        // System.gc();
+        // 
         // benchmarkDoublePHyBR3D(1);
-        // System.gc();
+        // 
         // benchmarkDoublePHyBR3D(2);
-        // System.gc();
+        // 
         // benchmarkDoublePHyBR3D(4);
-        // System.gc();
+        // 
         // benchmarkDoublePHyBR3D(8);
-        // System.gc();
+        // 
 
         // benchmarkFloatCGLS3D(1);
-        // System.gc();
+        // 
         // benchmarkFloatCGLS3D(2);
-        // System.gc();
+        // 
         // benchmarkFloatCGLS3D(4);
-        // System.gc();
+        // 
         // benchmarkFloatCGLS3D(8);
-        // System.gc();
+        // 
         benchmarkFloatPWPL3D(1);
-        System.gc();
+        
         benchmarkFloatPWPL3D(2);
-        System.gc();
+        
         benchmarkFloatPWPL3D(4);
-        System.gc();
+        
         benchmarkFloatPWPL3D(8);
-        System.gc();        
+                
         benchmarkFloatPHyBR3D(1);
-        System.gc();
+        
         benchmarkFloatPHyBR3D(2);
-        System.gc();
+        
         benchmarkFloatPHyBR3D(4);
-        System.gc();
+        
         benchmarkFloatPHyBR3D(8);
-        System.gc();
+        
         benchmarkFloatPCGLS3D(1);
-        System.gc();
+        
         benchmarkFloatPCGLS3D(2);
-        System.gc();
+        
         benchmarkFloatPCGLS3D(4);
-        System.gc();
+        
         benchmarkFloatPCGLS3D(8);
-        System.gc();
+        
         // benchmarkFloatMRNSD3D(1);
-        // System.gc();
+        // 
         // benchmarkFloatMRNSD3D(2);
-        // System.gc();
+        // 
         // benchmarkFloatMRNSD3D(4);
-        // System.gc();
+        // 
         // benchmarkFloatMRNSD3D(8);
-        // System.gc();
+        // 
         benchmarkFloatPMRNSD3D(1);
-        System.gc();
+        
         benchmarkFloatPMRNSD3D(2);
-        System.gc();
+        
         benchmarkFloatPMRNSD3D(4);
-        System.gc();
+        
         benchmarkFloatPMRNSD3D(8);
-        // System.gc();
+        // 
         // benchmarkFloatHyBR3D(1);
-        // System.gc();
+        // 
         // benchmarkFloatHyBR3D(2);
-        // System.gc();
+        // 
         // benchmarkFloatHyBR3D(4);
-        // System.gc();
+        // 
         // benchmarkFloatHyBR3D(8);
-        // System.gc();
+        // 
         System.exit(0);
 
     }
