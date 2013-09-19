@@ -27,7 +27,7 @@ import cern.colt.matrix.tdouble.algo.solver.HyBRRegularizationMethod;
 import cern.colt.matrix.tfloat.FloatFactory2D;
 import cern.colt.matrix.tfloat.FloatMatrix1D;
 import cern.colt.matrix.tfloat.FloatMatrix2D;
-import cern.colt.matrix.tfloat.algo.decomposition.DenseFloatSingularValueDecompositionDC;
+import cern.colt.matrix.tfloat.algo.decomposition.DenseFloatSingularValueDecomposition;
 import cern.colt.matrix.tfloat.impl.DenseColumnFloatMatrix2D;
 import cern.colt.matrix.tfloat.impl.DenseFloatMatrix1D;
 import cern.colt.matrix.tfloat.impl.DenseFloatMatrix2D;
@@ -153,7 +153,7 @@ public class HyBRFloatIterativeDeconvolver3D extends AbstractFloatIterativeDecon
         FloatMatrix2D U = new DenseFloatMatrix2D(1, (int)B.size());
         FloatMatrix2D C = null;
         FloatMatrix2D V = null;
-        DenseFloatSingularValueDecompositionDC svd;
+        DenseFloatSingularValueDecomposition svd;
         if (P == null) {
             beta = alg.norm2(b);
             U.viewRow(0).assign(b, FloatFunctions.multSecond(1.0f / beta));
@@ -186,7 +186,7 @@ public class HyBRFloatIterativeDeconvolver3D extends AbstractFloatIterativeDecon
                 }
                 switch (inSolver) {
                 case TIKHONOV:
-                    svd = alg.svdDC(C);
+                    svd = alg.svd(C);
                     Ub = svd.getU();
                     sv = svd.getSingularValues();
                     Vb = svd.getV();

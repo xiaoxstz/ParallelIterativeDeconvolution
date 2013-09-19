@@ -939,7 +939,7 @@ public class ParallelIterativeDeconvolution2D implements PlugIn, ImageListener {
         return pathToDeblurredImage;
     }
 
-    private final static String version = "1.11";
+    private final static String version = "1.12";
 
     private static final String[] methodNames = { "MRNSD", "WPL", "CGLS", "HyBR" };
 
